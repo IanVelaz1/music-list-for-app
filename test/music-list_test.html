@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>music-list test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../music-list.html">
+  </head>
+  <body>
+
+    <test-fixture id="testEvent">
+      <template>
+        <music-list></music-list>
+      </template>
+    </test-fixture>
+
+
+    <script>
+      suite('music-list', () => {
+       test("fires-selected-song",function(done){
+        let listElement=fixture("testEvent");
+        listElement.addEventListener("song-selected",(event)=>{
+          assert.equal(event.detail,"");
+          done();
+        });
+        listElement.selectSong({model:{song:""}});
+       });
+      
+      });
+    </script>
+
+  </body>
+</html>

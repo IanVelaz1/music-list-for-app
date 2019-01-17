@@ -1,0 +1,25 @@
+{
+  "name": "music-list",
+  "main": "music-list.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
+  "homepage": "https://github.com/jusolete/music-list",
+  "_release": "da3e8e815d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "da3e8e815df570df2897c6d0c238cbfa5f039e95"
+  },
+  "_source": "https://github.com/jusolete/music-list.git",
+  "_target": "*",
+  "_originalSource": "jusolete/music-list"
+}
