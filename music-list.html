@@ -1,42 +1,107 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../polymer/lib/elements/dom-repeat.html">
-
+<link rel="import" href="../iron-icons/iron-icons.html">
 <dom-module id="music-list">
   <template>
     <style>
       :host {
         display: block;
       }
-      .listContainer{
+
+      .listContainer {
         width: 100%;
         text-align: center;
         max-height: 250px;
         overflow-y: auto;
       }
-      .song-display{
+
+      .song-display {
         padding: 15px;
         cursor: pointer;
-        transition:0.3s;
-        font-size:70%;
+        transition: 0.3s;
+        display: flex;
+        font-size: 70%;
+        height: 40px;
       }
-      .song-display:hover{
-        background-color: darkslategray;
+
+      .song-display:hover {
+        background-color: rgba(3, 1, 99, 0.8);
         color: white;
         font-weight: bold;
       }
+
+      .songDescription {
+        margin-left: 20em;
+        text-decoration: none;
+        line-height: 60px;
+        color: white;
+        transition: 0.2s;
+      }
+
+      .songDescription:hover{
+        text-decoration: underline;
+      }
+
+      .btn {
+        margin-left: 40px;
+      }
+
+      .dropdown {
+      
+        display: inline-block;
+        height: 100%;
+        margin-left: 10em;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        padding: 12px 16px;
+        z-index: 1;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+        z-index: 300;
+        position: fixed;
+      }
+
+      #saveSong{
+        color: black;
+        transition: 0.3s;
+        padding: 2px;
+      }
+
+      #saveSong:hover{
+        background-color: #914e94;
+        color: white;
+      }
+
     </style>
-    <iron-ajax id="musicRequest" method="get" url="[[requestUrl]]" handle-as="json" on-response="songsRecovered" on-error="errorSongs" auto>
+    <iron-ajax id="musicRequest" method="get" url="[[requestUrl]]" handle-as="json" on-response="songsRecovered"
+      on-error="errorSongs" auto>
     </iron-ajax>
     <div class="listContainer">
-        <dom-repeat items="[[songsList]]" as="song" filter="{{filterSongs(filterArgument)}}">
-          <template>
-            <div class="song-display" on-click="selectSong">
-              <p >[[song.songName]]</p>
-              <p class="songDescription">[[song.songArtist.artistName]]</p>
+      <dom-repeat items="[[songsList]]" as="song" filter="{{filterSongs(filterArgument)}}">
+        <template>
+          <div class="song-display">
+
+            <img src="[[song.songAlbum.albumImage]]" style="max-width: 50px; max-height: 50px;" alt="" on-click="selectSong">
+            <p id="songName" style="margin-left: 20px;" on-click="selectSong">[[song.songName]]</p>
+            <a name="specific-album" href="/specific-album/[[song.songAlbum._id]]" class="songDescription">[[song.songAlbum.albumName]]</a>
+            <div class="dropdown">
+              <iron-icon icon="icons:more-horiz" style="margin-top: 50%;"></iron-icon>
+              <div class="dropdown-content">
+                <p id="saveSong" on-click="saveUserSong">Save song</p>
+              </div>
             </div>
-          </template>
-        </dom-repeat>
+          </div>
+        </template>
+      </dom-repeat>
     </div>
   </template>
 
@@ -63,44 +128,55 @@
           },
           filterArgument: {
             type: String,
+            value: "",
+            observer: "ob"
+          },
+          requestUrl: {
+            type: String,
             value: ""
           },
-          requestUrl:{
-            type:String,
-            value:""
-          },
-          hiddenList:{
-            type:Boolean,
-            value:true
+          hiddenList: {
+            type: Boolean,
+            value: true
           }
         };
       }
 
-      songsRecovered(event){
-        this.set("songsList",event.detail.response.songs);
-        console.log(this.songsList);
+      
+
+      songsRecovered(event) {
+        this.set("songsList", event.detail.response.songs);
       }
 
-      errorSongs(event){
-          this.set("charging",!this.charging);  
+      errorSongs(event) {
+        this.set("charging", !this.charging);
       }
 
-      selectSong(event){  
-          this.dispatchEvent(new CustomEvent("song-selected",{
+      selectSong(event) {
+        this.dispatchEvent(new CustomEvent("song-selected", {
+          bubbles: false,
+          composed: false,
+          detail: event.model.song
+        }))
+      }
+
+      filterSongs(searchArgument) {
+        if (!searchArgument) {
+          return null
+        } else {
+          return function (song) {
+            return song.songName.includes(searchArgument);
+          }
+        }
+      }
+
+      saveUserSong(event){
+          console.log(event.model.song);
+          this.dispatchEvent(new CustomEvent("user-song-saved",{
             bubbles:false,
-            composed:false, 
+            composed:false,
             detail:event.model.song
           }))
-      }
-
-      filterSongs(songs){
-        if(!songs){
-          return null
-        }else{
-         return function(song){
-           return song.includes(songs);
-         }
-        }
       }
 
     }

@@ -12,14 +12,14 @@
   "resolutions": {
     "polymer": "^2.0.0"
   },
-  "homepage": "https://github.com/jusolete/music-list",
-  "_release": "da3e8e815d",
+  "homepage": "https://github.com/jusolete/music-list-for-app",
+  "_release": "206585b5a2",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "da3e8e815df570df2897c6d0c238cbfa5f039e95"
+    "commit": "206585b5a286df41f4b705c5cafb5d366baf3b5a"
   },
-  "_source": "https://github.com/jusolete/music-list.git",
+  "_source": "https://github.com/jusolete/music-list-for-app.git",
   "_target": "*",
-  "_originalSource": "jusolete/music-list"
+  "_originalSource": "jusolete/music-list-for-app"
 }
