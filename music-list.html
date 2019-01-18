@@ -21,8 +21,9 @@
         cursor: pointer;
         transition: 0.3s;
         display: flex;
+        flex-wrap: wrap;
         font-size: 70%;
-        height: 40px;
+        
       }
 
       .song-display:hover {
@@ -39,7 +40,7 @@
         transition: 0.2s;
       }
 
-      .songDescription:hover{
+      .songDescription:hover {
         text-decoration: underline;
       }
 
@@ -48,7 +49,6 @@
       }
 
       .dropdown {
-      
         display: inline-block;
         height: 100%;
         margin-left: 10em;
@@ -70,17 +70,57 @@
         position: fixed;
       }
 
-      #saveSong{
+      #saveSong {
         color: black;
         transition: 0.3s;
         padding: 2px;
       }
 
-      #saveSong:hover{
+      #saveSong:hover {
         background-color: #914e94;
         color: white;
       }
 
+      #icon{
+        margin-top: 50%;
+      }
+
+      .img{
+        max-width: 50px; 
+        max-height: 50px;
+      }
+
+      @media only screen and (max-width: 1000px) {
+
+      .songDescription {
+        margin-left: 0;
+      }
+
+      .btn{
+        margin-left:0;
+      }
+
+      .song-display{
+        display: block;
+        text-align: center;
+      }
+
+      #icon{
+        margin-top: 0%;
+      }
+
+      .dropdown{
+        display: block;
+        margin-left: 0;
+       margin-top: 0%;
+      
+      }
+      .img{
+        max-width: 80px; 
+        max-height: 80px;
+      }
+       
+      }
     </style>
     <iron-ajax id="musicRequest" method="get" url="[[requestUrl]]" handle-as="json" on-response="songsRecovered"
       on-error="errorSongs" auto>
@@ -89,12 +129,11 @@
       <dom-repeat items="[[songsList]]" as="song" filter="{{filterSongs(filterArgument)}}">
         <template>
           <div class="song-display">
-
-            <img src="[[song.songAlbum.albumImage]]" style="max-width: 50px; max-height: 50px;" alt="" on-click="selectSong">
+            <img src="[[song.songAlbum.albumImage]]" class="img"  alt="" on-click="selectSong">
             <p id="songName" style="margin-left: 20px;" on-click="selectSong">[[song.songName]]</p>
             <a name="specific-album" href="/specific-album/[[song.songAlbum._id]]" class="songDescription">[[song.songAlbum.albumName]]</a>
             <div class="dropdown">
-              <iron-icon icon="icons:more-horiz" style="margin-top: 50%;"></iron-icon>
+              <iron-icon icon="icons:more-horiz" id="icon" ></iron-icon>
               <div class="dropdown-content">
                 <p id="saveSong" on-click="saveUserSong">Save song</p>
               </div>
@@ -142,7 +181,7 @@
         };
       }
 
-      
+
 
       songsRecovered(event) {
         this.set("songsList", event.detail.response.songs);
@@ -170,13 +209,13 @@
         }
       }
 
-      saveUserSong(event){
-          console.log(event.model.song);
-          this.dispatchEvent(new CustomEvent("user-song-saved",{
-            bubbles:false,
-            composed:false,
-            detail:event.model.song
-          }))
+      saveUserSong(event) {
+        console.log(event.model.song);
+        this.dispatchEvent(new CustomEvent("user-song-saved", {
+          bubbles: false,
+          composed: false,
+          detail: event.model.song
+        }))
       }
 
     }
